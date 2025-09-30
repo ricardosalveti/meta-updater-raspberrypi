@@ -1,10 +1,10 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI_append_rpi = " \
+SRC_URI:append:rpi = " \
             file://fw_env.config \
             "
 
-do_install_append_rpi () {
+do_install:append:rpi () {
   install -d ${D}${sysconfdir}
   install -m 0644 ${WORKDIR}/fw_env.config ${D}${sysconfdir}/fw_env.config
 }
