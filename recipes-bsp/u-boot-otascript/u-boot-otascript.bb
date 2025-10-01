@@ -24,3 +24,6 @@ addtask deploy before do_package after do_install
 do_deploy[dirs] += "${DEPLOYDIR}/${BOOTFILES_DIR_NAME}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+
+PROVIDES += "u-boot-default-script"
+RPROVIDES:${PN} += "u-boot-default-script"
