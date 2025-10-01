@@ -10,18 +10,25 @@ SRC_URI = "file://boot.scr \
 	   file://uEnv.txt"
 
 S = "${UNPACKDIR}"
+B = "${WORKDIR}/build"
 
 inherit deploy
 
-do_deploy() {
-    install -d ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}
+do_configure[noexec] = "1"
 
-    mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ostree boot script" -d ${UNPACKDIR}/boot.scr ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/boot.scr
-    install -m 0755 ${UNPACKDIR}/uEnv.txt ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/uEnv.txt
+do_compile() {
+    mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Ostree boot script" -d ${UNPACKDIR}/boot.scr boot.scr
 }
 
-addtask deploy before do_package after do_install
-do_deploy[dirs] += "${DEPLOYDIR}/${BOOTFILES_DIR_NAME}"
+do_deploy() {
+    install -d ${DEPLOYDIR}
+    install -m 0644 boot.scr ${DEPLOYDIR}/boot.scr-${MACHINE}-${PV}
+    ln -sf boot.scr-${MACHINE}-${PV} ${DEPLOYDIR}/boot.scr-${MACHINE}
+    ln -sf boot.scr-${MACHINE}-${PV} ${DEPLOYDIR}/boot.scr
+    install -m 0644 ${UNPACKDIR}/uEnv.txt ${DEPLOYDIR}
+}
+
+addtask deploy after do_compile before do_build
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
