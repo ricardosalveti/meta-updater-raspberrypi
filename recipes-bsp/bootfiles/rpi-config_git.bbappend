@@ -13,6 +13,3 @@ do_deploy:append() {
     echo "mask_gpu_interrupt0=0x400" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
     echo "dtparam=audio=on" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
 }
-
-ENABLE_UART:raspberrypi3 ?= "1"
-ENABLE_UART:raspberrypi4 ?= "1"
